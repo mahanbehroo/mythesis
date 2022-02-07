@@ -13,15 +13,14 @@ function visualize_motion(t1,t2)
 	dt = (tf-t0)/100;
 	t= (t0:dt:tf)';
 	z = interp1(T,Z,t);
+
+	index =21;
+
 	for j=1:length(t)
 		figure(2)
 		hold off
 		%[X,Y,Z] = ellipsoid(xc,yc,zc,xr,yr,zr)
 		[m, a, b, c] = get_object_properties('debris0000');
-
-
-
-
 
 		rotation_matrix = zeros(3,3);
 
@@ -57,6 +56,47 @@ function visualize_motion(t1,t2)
 		[X,Y,Z] = ellipsoid(0, 0, 0, a, b, c);
 		s = surf(X + x_c, Y + y_c, Z + z_c);
 		rotate(s,direction,amount_rotation_in_deg)
+
+		hold on
+
+		%------------------------------------------------------------%
+		% Visualizing spacecraft
+		
+		[m, a, b, c] = get_object_properties('spacecraft');
+
+		rotation_matrix = zeros(3,3);
+
+    	rotation_matrix(1,1) = z(j, index + 7);
+    	rotation_matrix(1,2) = z(j, index + 8);
+    	rotation_matrix(1,3) = z(j, index + 9);
+    	rotation_matrix(2,1) = z(j, index + 10);
+    	rotation_matrix(2,2) = z(j, index + 11);
+    	rotation_matrix(2,3) = z(j, index + 12);
+    	rotation_matrix(3,1) = z(j, index + 13);
+    	rotation_matrix(3,2) = z(j, index + 14);
+    	rotation_matrix(3,3) = z(j, index + 15);
+
+    	rotation_matrix_R2S = transpose(rotation_matrix);
+    	[amount_rotation, direction_1] = rotation_matrix2euler_angleAxis(rotation_matrix_R2S);
+
+    	if amount_rotation == 0 
+			direction_1 = [1; 0; 0]; % dummy direction
+		end
+
+		amount_rotation_in_deg = amount_rotation * (180/pi);
+		%direction = [e1 e2 e3];
+
+		x_c = z(j, index + 19);
+		y_c = z(j, index + 20);
+		z_c = z(j, index + 21);
+
+		[X1,Y1,Z1] = ellipsoid(0, 0, 0, a, b, c);
+		s1 = surf(X1 + x_c, Y1 + y_c, Z1 + z_c);
+		rotate(s1, direction_1, amount_rotation_in_deg)
+		%---------------------------------------------------------------------
+
+
+
 		title(num2str(round(100*t(j))/100));
 		% shading interp
     	view([0 0 1]);

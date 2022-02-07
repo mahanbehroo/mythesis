@@ -7,9 +7,9 @@ function [mass, a, b, c] = get_object_properties(object)
 		c = 5; % m
 	elseif object == 'spacecraft'
 		mass = 40; % kg
-		a = 4; % m
-		b = 4; % m 
-		c = 4; % m
+		a = 1; % m
+		b = 1; % m 
+		c = 1; % m
 
 	else
 		
