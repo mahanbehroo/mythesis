@@ -375,7 +375,9 @@ function initial_conditions = get_initial_conditions()
 	initial_velocity = [1;0;1];
 
 	initial_conditions_db = [initial_rates_B; initial_orientation; reshape(transpose(initial_rotation_matrix),[9,1]); initial_velocity; initial_position];
-
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	initial_orientation_sc = [0;0;0];
 	initial_euler_angles_sc = [0;0;0]; % [si, theta, phi]
 	initial_rates_Sc2R = [1;1;0.5]; % rad/s - w_body represented in body frame B
