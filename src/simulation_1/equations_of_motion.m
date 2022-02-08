@@ -115,9 +115,9 @@ function dz = equations_of_motion(t,z)
     dz(15,1) = rotation_matrix_dot(3,3);
 
 	%%%%%%%%%%%%%%%%%%%%%%
-	[mass, a, b, c] = get_object_properties('spacecraft');
+	[mass, a, b, c] = get_object_properties('debris0000');
 
-	external_force = get_total_force(t);
+	external_force = get_total_force(t, 'debris0000');
 
 	dz(16,1) = (1/mass) * external_force(1);
     dz(17,1) = (1/mass) * external_force(2);
@@ -243,7 +243,7 @@ function dz = equations_of_motion(t,z)
 	%%%%%%%%%%%%%%%%%%%%%%
 	[mass, a, b, c] = get_object_properties('spacecraft');
 
-	external_force = get_total_force(t);
+	external_force = get_total_force(t, 'spacecraft');
 
 	dz(index + 16,1) = (1/mass) * external_force(1);
     dz(index + 17,1) = (1/mass) * external_force(2);

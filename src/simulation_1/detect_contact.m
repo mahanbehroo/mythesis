@@ -1,4 +1,4 @@
-function contact_status = detect_contact(t)
+function contact_status = detect_contact()
 
 	contact_status = 0;
 
