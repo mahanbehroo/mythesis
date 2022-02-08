@@ -1,16 +1,21 @@
-function f = get_total_force(t, object)
-    contact_status = detect_contact();
-	if object == 'spacecraft'
+function f = get_total_force(t, object1, object2, z)
+    contact_situation = detect_contact(t , object1, object2, z);
+
+    contact_status = contact_situation(1);
+    penetration = contact_situation(2);
+    penetration_rate = contact_situation(3);
+
+	if object1 == 'spacecraft'
 		if contact_status == 0
 			f = get_control_force(t, 'spacecraft');
 		else
-			f = get_contact_force('spacecraft') + get_control_force(t, 'spacecraft');
+			f = get_contact_force('debris0000', 'spacecraft', penetration, penetration_rate) + get_control_force(t, 'spacecraft');
 		end
-    else object == 'debris0000'
+    else object1 == 'debris0000'
         if contact_status == 0
             f = [0;0;0];
         else
-            f = get_contact_force('debris0000')
+            f = get_contact_force('debris0000', 'spacecraft', penetration, penetration_rate);
         end
     end
 end

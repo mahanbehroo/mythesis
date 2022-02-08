@@ -32,15 +32,15 @@ function plot_results()
 
 	    rotation_matrix_Sc2R = zeros(3,3);
     
-	    rotation_matrix_Sc2R(1,1) = z(j,7);
-	    rotation_matrix_Sc2R(1,2) = z(j,8);
-	    rotation_matrix_Sc2R(1,3) = z(j,9);
-	    rotation_matrix_Sc2R(2,1) = z(j,10);
-	    rotation_matrix_Sc2R(2,2) = z(j,11);
-	    rotation_matrix_Sc2R(2,3) = z(j,12);
-	    rotation_matrix_Sc2R(3,1) = z(j,13);
-	    rotation_matrix_Sc2R(3,2) = z(j,14);
-	    rotation_matrix_Sc2R(3,3) = z(j,15);
+	    rotation_matrix_Sc2R(1,1) = z(j, index + 7);
+	    rotation_matrix_Sc2R(1,2) = z(j, index + 8);
+	    rotation_matrix_Sc2R(1,3) = z(j, index + 9);
+	    rotation_matrix_Sc2R(2,1) = z(j, index + 10);
+	    rotation_matrix_Sc2R(2,2) = z(j, index + 11);
+	    rotation_matrix_Sc2R(2,3) = z(j, index + 12);
+	    rotation_matrix_Sc2R(3,1) = z(j, index + 13);
+	    rotation_matrix_Sc2R(3,2) = z(j, index + 14);
+	    rotation_matrix_Sc2R(3,3) = z(j, index + 15);
     
 	    euler_angles_sc(j, 1:3) = rotation_matrix2euler_angles(rotation_matrix_Sc2R);
     end

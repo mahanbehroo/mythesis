@@ -1,4 +1,4 @@
-function contact_force = get_contact_force(object)
+function contact_force = get_contact_force(object1, object2, contact_situation)
 
 	
 	if object == 'spacecraft'

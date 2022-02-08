@@ -117,7 +117,7 @@ function dz = equations_of_motion(t,z)
 	%%%%%%%%%%%%%%%%%%%%%%
 	[mass, a, b, c] = get_object_properties('debris0000');
 
-	external_force = get_total_force(t, 'debris0000');
+	external_force = get_total_force(t, 'debris0000', z);
 
 	dz(16,1) = (1/mass) * external_force(1);
     dz(17,1) = (1/mass) * external_force(2);
@@ -140,9 +140,9 @@ function dz = equations_of_motion(t,z)
 	I_22 = moment_of_inerta_sc(2,2);
 	I_33 = moment_of_inerta_sc(3,3);
 
-	omega_1 = z(index+1);
-	omega_2 = z(index+2);
-	omega_3 = z(index+3);
+	omega_1 = z(index + 1,1);
+	omega_2 = z(index + 2,1);
+	omega_3 = z(index + 3,1);
 
 	moment = get_total_moment(t, 'spacecraft');
 
@@ -170,12 +170,12 @@ function dz = equations_of_motion(t,z)
 
 	%%%%%%%%%%%%%%%%%%%%
 
-	dz(index + 1,1) = dz_rot_obj(1,1);
-	dz(index + 2,1) = dz_rot_obj(2,1);
-	dz(index + 3,1) = dz_rot_obj(3,1);
-	dz(index + 4,1) = dz_rot_obj(4,1);
-	dz(index + 5,1) = dz_rot_obj(5,1);
-	dz(index + 6,1) = dz_rot_obj(6,1);
+	dz(index + 1,1) = dz_rot_sc(1,1);
+	dz(index + 2,1) = dz_rot_sc(2,1);
+	dz(index + 3,1) = dz_rot_sc(3,1);
+	dz(index + 4,1) = dz_rot_sc(4,1);
+	dz(index + 5,1) = dz_rot_sc(5,1);
+	dz(index + 6,1) = dz_rot_sc(6,1);
 
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -243,7 +243,7 @@ function dz = equations_of_motion(t,z)
 	%%%%%%%%%%%%%%%%%%%%%%
 	[mass, a, b, c] = get_object_properties('spacecraft');
 
-	external_force = get_total_force(t, 'spacecraft');
+	external_force = get_total_force(t, 'spacecraft', z);
 
 	dz(index + 16,1) = (1/mass) * external_force(1);
     dz(index + 17,1) = (1/mass) * external_force(2);

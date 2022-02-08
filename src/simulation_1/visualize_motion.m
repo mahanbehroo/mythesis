@@ -91,7 +91,7 @@ function visualize_motion(t1,t2)
 		z_c = z(j, index + 21);
 
 		[X1,Y1,Z1] = ellipsoid(0, 0, 0, a, b, c);
-		s1 = surf(X1 + x_c, Y1 + y_c, Z1 + z_c);
+		s1 = surf(X1, Y1 , Z1);
 		rotate(s1, direction_1, amount_rotation_in_deg)
 		%---------------------------------------------------------------------
 
