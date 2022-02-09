@@ -1,31 +1,42 @@
-function contact_situation = detect_contact(t, object1, object2, z)
+function  contact_situation = detect_contact(t, z)
 
-	object_1 = get_object_properties(object1);
-	object_2 = get_object_properties(object2);
+	object_1 = get_object_properties('spacecraft');
+	object_2 = get_object_properties('debris0000');
 
-	if object_1(2) == object_1(3) && object_1(2) = object_1(4)
-		object1_geometry = 'sphere';
+	if object_1(2) == object_1(3) && object_1(2) == object_1(4)
+		object1_isSphere = true;
 	else
-		object1_geometry = 'ellipsoid';
+		object1_isEllips = true;
+        object1_isSphere = false;
 	end
 
-	if object_2(2) == object_2(3) && object_2(2) = object_2(4)
-		object1_geometry = 'sphere';
+	if object_2(2) == object_2(3) && object_2(2) == object_2(4)
+		object2_isSphere = true;
 	else
-		object2_geometry = 'ellipsoid';
+		object2_isEllips = true;
+        object2_isSphere = false;
 	end
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    index = 21;
+	r_db = [z(19:21)];
+    v_db = [z(16:18)];
+	r_sc = [z(index + 16:index + 18)];	
+	v_sc = [z(index + 16:index + 18)];
 
-	if object1_geometry == 'sphere' && object2_geometry == 'sphere'
-		r_db = [];
-		r_sc = [];
-		v_db = [];
-		v_sc = [];
-
-		[m1 , a1, b1, c1] = object_1;
-		[m2 , a2, b2, c2] = object_2;
+	if (object1_isSphere == true) && (object2_isSphere == true)
+        
+		%% [m1 , a1, b1, c1] = object_1;
+        %m1 = object_1(1);
+        a1 = object_1(2);
+        %b1 = object_1(3);
+        %c1 = object_1(4);
+		%[m2 , a2, b2, c2] = object_2;
+        %% m2 = object_2(1);
+        a2 = object_2(2);
+        %b2 = object_2(3);
+        %c2 = object_2(4);
 
 		R_1 = a1;
 		R_2 = a2;
@@ -42,12 +53,17 @@ function contact_situation = detect_contact(t, object1, object2, z)
 			contact_status = 0;
 		end
 
-	elseif object1 == 'sphere' && object2 == 'membrane'
+    elseif (object1_isSphere == true) && (object2_isSphere == false)
+
+        % implement other geometry settings
 		contact_status = 0;
+        penetration = 0;
+        penetration_rate =0;
+        %---------------------------------%
+
 	else
 		print('not implemented yet!');
-	end
-
-	contact_situation = [contact_status , penetration, penetration_rate];
+    end
+    contact_situation = [contact_status , penetration, penetration_rate];
 
 end

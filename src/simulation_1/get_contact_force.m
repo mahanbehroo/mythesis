@@ -1,7 +1,7 @@
 function contact_force = get_contact_force(object1, object2, contact_situation)
-
+    % NEED z to calculate u_normal vector
 	
-	if object == 'spacecraft'
+	if object1 == 'spacecraft'
 
 
 		if contact_status==1
@@ -16,11 +16,12 @@ function contact_force = get_contact_force(object1, object2, contact_situation)
 			contact_force = 0; 
 		    X_i = 0;
 		    Y_i = 0;
+            contact_force =[contact_force;X_i;Y_i];
 		end
 
-		contact_force =[contact_force,X_i,Y_i];
+		contact_force =[contact_force;X_i;Y_i];
 
 	else
-		contact_force =[0,0,0];
+		contact_force =[0;0;0];
 
 end
