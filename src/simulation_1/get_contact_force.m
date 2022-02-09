@@ -8,6 +8,11 @@ function [normal_force, friction] = get_contact_force(object1, object2, contact_
 	v_sc = [z(index + 16:index + 18)];
     r_s2d = r_sc - r_db;
     u_normal = r_s2d /norm(r_s2d);
+
+    %v_s2d = v_sc - v_db; 
+    isSlipping = 0; %%%
+
+    u_tangent = [0;0;0];
 	
 	
     delta = contact_situation(2);
@@ -35,15 +40,15 @@ function [normal_force, friction] = get_contact_force(object1, object2, contact_
 
 
     if delta > 0
-	    normal_force = k_c*delta^nn+lambda*delta^nn*delta_dot
-        normal_force = normal_force * u_normal;
+	    normal_force_mag = k_c*delta^nn+lambda*delta^nn*delta_dot
+        normal_force = normal_force_mag * u_normal;
         if isSlipping == true
             miu_k = 0.1; % dummy nonzero value
-            friction_mag = miu_k * normal_force;
+            friction_mag = miu_k * normal_force_mag;
             friction = friction_mag * u_tangent;
         else
             miu_s = 0.2; % dummy nonzero value
-            friction_mag = miu_s * normal_force;
+            friction_mag = miu_s * normal_force_mag;
             friction = friction_mag * u_tangent;
         end
 
@@ -53,11 +58,7 @@ function [normal_force, friction] = get_contact_force(object1, object2, contact_
         friction_mag = 0;
         friction = friction_mag * u_tangent;
     end
-
-
-
-
-    
+   
 
     if object2 == 'spacecraft'		
 

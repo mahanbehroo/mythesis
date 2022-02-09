@@ -58,7 +58,8 @@ function visualize_motion(t1,t2)
 		%z_c = center_position_vector(3);
 		[X,Y,Z] = ellipsoid(0, 0, 0, a, b, c);
 		s = surf(X + x_c, Y + y_c, Z + z_c);
-		%rotate(s,direction,amount_rotation_in_deg)
+        origin = [x_c, y_c, z_c];
+		rotate(s,direction,amount_rotation_in_deg, origin)
 
 		hold on
 
@@ -98,17 +99,18 @@ function visualize_motion(t1,t2)
 
 		[X1,Y1,Z1] = ellipsoid(0, 0, 0, a, b, c);
 		s1 = surf(X1 + x_c, Y1 + y_c , Z1 + z_c);
-		%rotate(s1, direction_1, amount_rotation_in_deg)
+		origin = [x_c, y_c, z_c];
+        rotate(s1, direction_1, amount_rotation_in_deg, origin)
 		%---------------------------------------------------------------------
 
 
 
 		title(num2str(round(100*t(j))/100));
 		% shading interp
-    	view([0 0 1]);
-    	xlim([-5 5]);
-    	ylim([-5 5]);
-    	zlim ([-5 5]);
+    	view([1 1 1]);
+    	xlim([-7.5 7.5]);
+    	ylim([-7.5 7.5]);
+    	zlim ([-7.5 7.5]);
     	xlabel('X (m)')
     	ylabel('Y (m)')
     	zlabel('Z (m)')
