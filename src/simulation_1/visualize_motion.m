@@ -20,7 +20,10 @@ function visualize_motion(t1,t2)
 		figure(2)
 		hold off
 		%[X,Y,Z] = ellipsoid(xc,yc,zc,xr,yr,zr)
-		[m, a, b, c] = get_object_properties('debris0000');
+		object_properties = get_object_properties('debris0000');
+        a = object_properties(2);
+        b = object_properties(3);
+        c = object_properties(4);
 
 		rotation_matrix = zeros(3,3);
 
@@ -62,7 +65,10 @@ function visualize_motion(t1,t2)
 		%------------------------------------------------------------%
 		% Visualizing spacecraft
 		
-		[m, a, b, c] = get_object_properties('spacecraft');
+		object_properties = get_object_properties('spacecraft');
+        a = object_properties(2);
+        b = object_properties(3);
+        c = object_properties(4);
 
 		rotation_matrix = zeros(3,3);
 
@@ -91,8 +97,8 @@ function visualize_motion(t1,t2)
 		z_c = z(j, index + 21);
 
 		[X1,Y1,Z1] = ellipsoid(0, 0, 0, a, b, c);
-		s1 = surf(X1, Y1 , Z1);
-		rotate(s1, direction_1, amount_rotation_in_deg)
+		s1 = surf(X1 + x_c, Y1 + y_c , Z1 + z_c);
+		%rotate(s1, direction_1, amount_rotation_in_deg)
 		%---------------------------------------------------------------------
 
 
