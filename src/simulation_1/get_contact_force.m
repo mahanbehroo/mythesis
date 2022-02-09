@@ -1,4 +1,4 @@
-function contact_force = get_contact_force(object1, object2, contact_situation, z)
+function [normal_force, friction] = get_contact_force(object1, object2, contact_situation, z)
     % NEED z to calculate u_normal vector
 
     index = 21;
@@ -31,20 +31,40 @@ function contact_force = get_contact_force(object1, object2, contact_situation, 
 	k_c= (4/(3*pi))*(sqrt(r)/(h_1+h_2));
 	lambda = 1.5*alpha*k_c;
 
+
+
+
     if delta > 0
 	    normal_force = k_c*delta^nn+lambda*delta^nn*delta_dot
-        contact_force = normal_force * u_normal;
+        normal_force = normal_force * u_normal;
+        if isSlipping == true
+            miu_k = 0.1; % dummy nonzero value
+            friction_mag = miu_k * normal_force;
+            friction = friction_mag * u_tangent;
+        else
+            miu_s = 0.2; % dummy nonzero value
+            friction_mag = miu_s * normal_force;
+            friction = friction_mag * u_tangent;
+        end
+
     else
         normal_force = 0;
-        contact_force = normal_force * u_normal;
+        normal_force = normal_force * u_normal;
+        friction_mag = 0;
+        friction = friction_mag * u_tangent;
     end
+
+
+
+
+    
 
     if object2 == 'spacecraft'		
 
-		contact_force =  contact_force;
+		normal_force =  normal_force;
 
 	else
-		contact_force = - contact_force;
+		normal_force = - normal_force;
 
     end
 

@@ -71,10 +71,6 @@ function dz = equations_of_motion(t,z)
     else
         test_determinant = det(rotation_matrix);
     end
-
-
-
-
 	%rotation_matrix_dot = zeros(3,3);
 
 	%rotation_matrix_dot(1,1) = - omega_3 * rotation_matrix(2,1) + omega_2 * rotation_matrix(3,1);
@@ -121,11 +117,19 @@ function dz = equations_of_motion(t,z)
 
     contact_situation = detect_contact(t, z);
 
-	external_force = get_contact_force('spacecraft', 'debris0000', contact_situation, z);
+	normal_force_imposedOn_debris = get_contact_force('spacecraft', 'debris0000', contact_situation, z);
 
-	dz(16,1) = (1/mass) * external_force(1);
-    dz(17,1) = (1/mass) * external_force(2);
-    dz(18,1) = (1/mass) * external_force(3);
+
+    % implement friction here!
+    friction_imposedOn_debris = [0;0;0];
+
+
+
+    net_force = normal_force_imposedOn_debris + friction_imposedOn_debris;
+
+	dz(16,1) = (1/mass) * net_force(1);
+    dz(17,1) = (1/mass) * net_force(2);
+    dz(18,1) = (1/mass) * net_force(3);
     dz(19,1) = z(16,1);
 	dz(20,1) = z(17,1);
 	dz(21,1) = z(18,1);
@@ -247,11 +251,15 @@ function dz = equations_of_motion(t,z)
 	%%%%%%%%%%%%%%%%%%%%%%
 	object_properties = get_object_properties('spacecraft');
     mass = object_properties(1);
-	external_force = - external_force;
+	normal_force_imposedOn_spacecraft = - normal_force_imposedOn_debris;
+    friction_imposedOn_spacecraft = -friction_imposedOn_debris;
+    % -------
+    net_force = normal_force_imposedOn_spacecraft + friction_imposedOn_spacecraft;
+    %--------
 
-	dz(index + 16,1) = (1/mass) * external_force(1);
-    dz(index + 17,1) = (1/mass) * external_force(2);
-    dz(index + 18,1) = (1/mass) * external_force(3);
+	dz(index + 16,1) = (1/mass) * net_force(1);
+    dz(index + 17,1) = (1/mass) * net_force(2);
+    dz(index + 18,1) = (1/mass) * net_force(3);
     dz(index + 19,1) = z(index + 16,1);
 	dz(index + 20,1) = z(index + 17,1);
 	dz(index + 21,1) = z(index + 18,1);
