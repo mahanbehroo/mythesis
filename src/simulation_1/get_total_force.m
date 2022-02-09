@@ -10,13 +10,13 @@ function f = get_total_force(t, object1, object2, z)
 		if contact_status == 0
 			f = get_control_force(t, 'spacecraft');
 		else
-			f = get_contact_force('debris0000', 'spacecraft', contact_situation) + get_control_force(t, 'spacecraft');
+			f = get_contact_force('debris0000', 'spacecraft', contact_situation, z) + get_control_force(t, 'spacecraft');
 		end
     else object1 == 'debris0000'
         if contact_status == 0
             f = [0;0;0];
         else
-            f = get_contact_force('debris0000', 'spacecraft', contact_situation);
+            f = get_contact_force('debris0000', 'spacecraft', contact_situation, z);
         end
     end
 end

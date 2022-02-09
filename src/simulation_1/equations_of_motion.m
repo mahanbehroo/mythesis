@@ -119,7 +119,9 @@ function dz = equations_of_motion(t,z)
 
     mass = object_properties(1);
 
-	external_force = get_total_force(t, 'spacecraft', 'debris0000', z);
+    contact_situation = detect_contact(t, z);
+
+	external_force = get_contact_force('spacecraft', 'debris0000', contact_situation, z);
 
 	dz(16,1) = (1/mass) * external_force(1);
     dz(17,1) = (1/mass) * external_force(2);
@@ -245,7 +247,7 @@ function dz = equations_of_motion(t,z)
 	%%%%%%%%%%%%%%%%%%%%%%
 	object_properties = get_object_properties('spacecraft');
     mass = object_properties(1);
-	external_force = get_total_force(t, 'debris0000', 'spacecraft', z);
+	external_force = - external_force;
 
 	dz(index + 16,1) = (1/mass) * external_force(1);
     dz(index + 17,1) = (1/mass) * external_force(2);

@@ -58,7 +58,7 @@ function visualize_motion(t1,t2)
 		%z_c = center_position_vector(3);
 		[X,Y,Z] = ellipsoid(0, 0, 0, a, b, c);
 		s = surf(X + x_c, Y + y_c, Z + z_c);
-		rotate(s,direction,amount_rotation_in_deg)
+		%rotate(s,direction,amount_rotation_in_deg)
 
 		hold on
 

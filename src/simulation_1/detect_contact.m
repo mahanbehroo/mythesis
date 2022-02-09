@@ -22,7 +22,7 @@ function  contact_situation = detect_contact(t, z)
     index = 21;
 	r_db = [z(19:21)];
     v_db = [z(16:18)];
-	r_sc = [z(index + 16:index + 18)];	
+	r_sc = [z(index + 19:index + 21)];	
 	v_sc = [z(index + 16:index + 18)];
 
 	if (object1_isSphere == true) && (object2_isSphere == true)
