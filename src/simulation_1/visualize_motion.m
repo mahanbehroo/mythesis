@@ -108,9 +108,9 @@ function visualize_motion(t1,t2)
 		title(num2str(round(100*t(j))/100));
 		% shading interp
     	view([1 1 1]);
-    	xlim([-7.5 7.5]);
-    	ylim([-7.5 7.5]);
-    	zlim ([-7.5 7.5]);
+    	xlim([-10 5]);
+    	ylim([-10 5]);
+    	zlim ([-5 5]);
     	xlabel('X (m)')
     	ylabel('Y (m)')
     	zlabel('Z (m)')

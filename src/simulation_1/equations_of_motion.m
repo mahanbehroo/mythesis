@@ -12,11 +12,59 @@ function dz = equations_of_motion(t,z)
 	omega_2 = z(2);
 	omega_3 = z(3);
 
-	moment = get_total_moment(t, 'debris0000');
+	
+    % -----------------------------------------------------
+    % -----------------------------------------------------------
+    object_properties = get_object_properties('debris0000');
 
-	M_1 = moment(1);
-	M_2 = moment(2);
-	M_3 = moment(3);
+    mass = object_properties(1);
+
+    contact_situation = detect_contact(t, z);
+    if contact_situation(1) == 1
+        [normal_force_imposedOn_debris, friction_imposedOn_debris] = get_contact_force('spacecraft', 'debris0000', contact_situation, z);
+    else
+        friction_imposedOn_debris = [0;0;0];
+        normal_force_imposedOn_debris = [0;0;0];
+    end
+    % -----------------------------------------------------
+
+    % implement friction here!
+    %friction_imposedOn_debris = [0;0;0];
+
+
+
+    net_force = normal_force_imposedOn_debris + friction_imposedOn_debris;
+    % -----------------------------------------------------------
+    a = object_properties(2);
+    if norm(friction_imposedOn_debris) > 0
+        lever_db = a * (normal_force_imposedOn_debris/norm(normal_force_imposedOn_debris));
+    else
+        lever_db =[0; 0; 0];
+    end
+    moment_in_R = get_total_moment(t, 'debris0000', friction_imposedOn_debris, lever_db);
+    
+    rotation_matrix = zeros(3,3);
+
+    rotation_matrix(1,1) = z(7,1);
+    rotation_matrix(1,2) = z(8,1);
+    rotation_matrix(1,3) = z(9,1);
+    rotation_matrix(2,1) = z(10,1);
+    rotation_matrix(2,2) = z(11,1);
+    rotation_matrix(2,3) = z(12,1);
+    rotation_matrix(3,1) = z(13,1);
+    rotation_matrix(3,2) = z(14,1);
+    rotation_matrix(3,3) = z(15,1);
+
+    if det(rotation_matrix)== 1
+        test_determinant = 0;
+    else
+        test_determinant = det(rotation_matrix);
+    end
+
+    moment_in_B = rotation_matrix * moment_in_R;
+	M_1 = moment_in_B(1);
+	M_2 = moment_in_B(2);
+	M_3 = moment_in_B(3);
 
 
 	dz_rot_obj = zeros(6,1); % instantiate a zero vector for elements
@@ -54,23 +102,7 @@ function dz = equations_of_motion(t,z)
 
 	%--------------------
 
-    rotation_matrix = zeros(3,3);
 
-    rotation_matrix(1,1) = z(7,1);
-    rotation_matrix(1,2) = z(8,1);
-    rotation_matrix(1,3) = z(9,1);
-    rotation_matrix(2,1) = z(10,1);
-    rotation_matrix(2,2) = z(11,1);
-    rotation_matrix(2,3) = z(12,1);
-    rotation_matrix(3,1) = z(13,1);
-    rotation_matrix(3,2) = z(14,1);
-    rotation_matrix(3,3) = z(15,1);
-
-    if det(rotation_matrix)== 1
-        test_determinant = 0;
-    else
-        test_determinant = det(rotation_matrix);
-    end
 	%rotation_matrix_dot = zeros(3,3);
 
 	%rotation_matrix_dot(1,1) = - omega_3 * rotation_matrix(2,1) + omega_2 * rotation_matrix(3,1);
@@ -111,21 +143,9 @@ function dz = equations_of_motion(t,z)
     dz(15,1) = rotation_matrix_dot(3,3);
 
 	%%%%%%%%%%%%%%%%%%%%%%
-	object_properties = get_object_properties('debris0000');
-
-    mass = object_properties(1);
-
-    contact_situation = detect_contact(t, z);
-
-	normal_force_imposedOn_debris = get_contact_force('spacecraft', 'debris0000', contact_situation, z);
-
-
-    % implement friction here!
-    friction_imposedOn_debris = [0;0;0];
 
 
 
-    net_force = normal_force_imposedOn_debris + friction_imposedOn_debris;
 
 	dz(16,1) = (1/mass) * net_force(1);
     dz(17,1) = (1/mass) * net_force(2);
@@ -152,12 +172,51 @@ function dz = equations_of_motion(t,z)
 	omega_2 = z(index + 2,1);
 	omega_3 = z(index + 3,1);
 
-	moment = get_total_moment(t, 'spacecraft');
+    % -----------------------------------------------------
+    % -----------------------------------------------------------
 
-	M_1 = moment(1);
-	M_2 = moment(2);
-	M_3 = moment(3);
+    	%%%%%%%%%%%%%%%%%%%%%%
+	object_properties = get_object_properties('spacecraft');
+    mass = object_properties(1);
+	normal_force_imposedOn_spacecraft = - normal_force_imposedOn_debris;
+    friction_imposedOn_spacecraft = - friction_imposedOn_debris;
+    % -------
+    net_force = normal_force_imposedOn_spacecraft + friction_imposedOn_spacecraft;
+    %--------
+    a = object_properties(2);
 
+    if norm(friction_imposedOn_spacecraft) > 0
+        lever_db = a * (normal_force_imposedOn_spacecraft/norm(normal_force_imposedOn_spacecraft));
+    else
+        lever_db =[0; 0; 0];
+    end
+    %lever_db = a * (normal_force_imposedOn_spacecraft/norm(normal_force_imposedOn_spacecraft)); 
+    moment_in_R = get_total_moment(t, 'spacecraft', friction_imposedOn_spacecraft, lever_db);
+
+    rotation_matrix = zeros(3,3);
+
+    rotation_matrix(1,1) = z(index + 7,1);
+    rotation_matrix(1,2) = z(index + 8,1);
+    rotation_matrix(1,3) = z(index + 9,1);
+    rotation_matrix(2,1) = z(index + 10,1);
+    rotation_matrix(2,2) = z(index + 11,1);
+    rotation_matrix(2,3) = z(index + 12,1);
+    rotation_matrix(3,1) = z(index + 13,1);
+    rotation_matrix(3,2) = z(index + 14,1);
+    rotation_matrix(3,3) = z(index + 15,1);
+
+    if det(rotation_matrix)== 1
+        test_determinant = 0;
+    else
+        test_determinant = det(rotation_matrix);
+    end
+
+
+
+    moment_in_B = rotation_matrix * moment_in_R;
+	M_1 = moment_in_B(1);
+	M_2 = moment_in_B(2);
+	M_3 = moment_in_B(3);
 
 	dz_rot_sc = zeros(6,1); % instantiate a zero vector for elements
 
@@ -188,23 +247,6 @@ function dz = equations_of_motion(t,z)
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	rotation_matrix = zeros(3,3);
-
-    rotation_matrix(1,1) = z(index + 7,1);
-    rotation_matrix(1,2) = z(index + 8,1);
-    rotation_matrix(1,3) = z(index + 9,1);
-    rotation_matrix(2,1) = z(index + 10,1);
-    rotation_matrix(2,2) = z(index + 11,1);
-    rotation_matrix(2,3) = z(index + 12,1);
-    rotation_matrix(3,1) = z(index + 13,1);
-    rotation_matrix(3,2) = z(index + 14,1);
-    rotation_matrix(3,3) = z(index + 15,1);
-
-    if det(rotation_matrix)== 1
-        test_determinant = 0;
-    else
-        test_determinant = det(rotation_matrix);
-    end
 
 
 
@@ -248,14 +290,7 @@ function dz = equations_of_motion(t,z)
     dz(index + 14,1) = rotation_matrix_dot(3,2);
     dz(index + 15,1) = rotation_matrix_dot(3,3);
 
-	%%%%%%%%%%%%%%%%%%%%%%
-	object_properties = get_object_properties('spacecraft');
-    mass = object_properties(1);
-	normal_force_imposedOn_spacecraft = - normal_force_imposedOn_debris;
-    friction_imposedOn_spacecraft = -friction_imposedOn_debris;
-    % -------
-    net_force = normal_force_imposedOn_spacecraft + friction_imposedOn_spacecraft;
-    %--------
+
 
 	dz(index + 16,1) = (1/mass) * net_force(1);
     dz(index + 17,1) = (1/mass) * net_force(2);

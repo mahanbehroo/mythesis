@@ -1,9 +1,9 @@
-function m = get_total_moment(t, object)
+function m = get_total_moment(t, object, force, lever)
 
 	if object == 'debris0000'
-		m = [0;0;0];
+		m = cross(lever, force);
 	elseif object == 'spacecraft'
-		m = [0;0;0];
+		m = cross(lever, force);
 	else
 		print('Object is unknown!');
 	end

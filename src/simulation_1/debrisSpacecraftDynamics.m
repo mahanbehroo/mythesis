@@ -2,7 +2,7 @@ function debrisSpacecraftDynamics()
 	
 	% Set initial and final time
 	t0= 0;
-	tf= 5;
+	tf= 20;
 	%----------------------------%
 	% Set initial conditions for ODE solver
 	initial_conditions = get_initial_conditions();
