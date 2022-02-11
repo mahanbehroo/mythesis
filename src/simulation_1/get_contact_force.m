@@ -16,7 +16,69 @@ function [normal_force, friction] = get_contact_force(object1, object2, contact_
 
     q_s2d = cross(u_normal, u_v_s2d);
     t_s2d = - cross(q_s2d, u_normal);
-    u_tangent = t_s2d; 
+
+    omega_db = [z(1:3)];
+
+    debri_properties = get_object_properties('debris0000');
+    a = debri_properties(2);
+    r_contact_point_db = a * u_normal;
+
+    v_contact_point_db = cross(omega_db, r_contact_point_db);
+    
+    spacecraft_properties = get_object_properties('spacecraft');
+    a2 = spacecraft_properties(2);
+    r_contact_point_sc = - a2 * u_normal;
+    
+    omega_sc = [z(index + 1:index + 3)];
+    v_contact_point_sc = cross(omega_sc, r_contact_point_sc);
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    rotation_matrix = zeros(3,3);
+    rotation_matrix(1,1) = z(7,1);
+    rotation_matrix(1,2) = z(8,1);
+    rotation_matrix(1,3) = z(9,1);
+    rotation_matrix(2,1) = z(10,1);
+    rotation_matrix(2,2) = z(11,1);
+    rotation_matrix(2,3) = z(12,1);
+    rotation_matrix(3,1) = z(13,1);
+    rotation_matrix(3,2) = z(14,1);
+    rotation_matrix(3,3) = z(15,1);
+
+    matrix_1 = rotation_matrix;
+
+
+    rotation_matrix_2 = zeros(3,3);
+
+    rotation_matrix_2(1,1) = z(index + 7,1);
+    rotation_matrix_2(1,2) = z(index + 8,1);
+    rotation_matrix_2(1,3) = z(index + 9,1);
+    rotation_matrix_2(2,1) = z(index + 10,1);
+    rotation_matrix_2(2,2) = z(index + 11,1);
+    rotation_matrix_2(2,3) = z(index + 12,1);
+    rotation_matrix_2(3,1) = z(index + 13,1);
+    rotation_matrix_2(3,2) = z(index + 14,1);
+    rotation_matrix_2(3,3) = z(index + 15,1);
+
+    matrix_2 = rotation_matrix_2;
+    
+    v_contact_point_db = matrix_1' * v_contact_point_db;
+
+    v_contact_point_sc = matrix_2' * v_contact_point_sc;
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%5%%
+
+    relative_rotation_component_vector = v_contact_point_sc - v_contact_point_db;
+    dummy = relative_rotation_component_vector;
+    
+    if norm(dummy) > 0
+        relative_rotation_component_unit_vector = dummy / norm(dummy);
+    else
+        relative_rotation_component_unit_vector = [0;0;0];
+    end
+
+     
+    u_tangent = t_s2d + relative_rotation_component_unit_vector ; 
+    u_tangent = u_tangent / norm(u_tangent);
 
     
 

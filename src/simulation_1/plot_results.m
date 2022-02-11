@@ -1,7 +1,7 @@
 function plot_results()
 	tic
 	%----------------- Reading the simulation output file --------------------%
-	load 'Outputs\\OutputFile.txt'
+	OutputFile = load ('Outputs\\OutputFile.txt')
 	fprintf('\nElapsed time loading data file (sec) = %1.3f\n',toc)
 	%----------------- plotting m_ij's position vs time ----------------------%
 	T	= OutputFile(:,1);

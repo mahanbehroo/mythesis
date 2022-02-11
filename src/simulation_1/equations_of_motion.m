@@ -8,7 +8,7 @@ function dz = equations_of_motion(t,z)
 	I_22 = moment_of_inerta(2,2);
 	I_33 = moment_of_inerta(3,3);
 
-	omega_1 = z(1);
+	omega_1 = z(1); % omega_Body_wtr_Reference represented in Body frame
 	omega_2 = z(2);
 	omega_3 = z(3);
 
