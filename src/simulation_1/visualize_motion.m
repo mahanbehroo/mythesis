@@ -115,6 +115,6 @@ function visualize_motion(t1,t2)
     	ylabel('Y (m)')
     	zlabel('Z (m)')
 		hold on
-		pause(dt)
+		%pause(dt)
 	end
 end
