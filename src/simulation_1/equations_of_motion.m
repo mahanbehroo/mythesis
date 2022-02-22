@@ -358,5 +358,40 @@ function dz = equations_of_motion(t,z)
 	dz(49,1) = dq_R2B_sc(3, 1);
 	dz(50,1) = dq_R2B_sc(4, 1);
 
+    %%%%%%%%%%%%%%%%%%%%% adding states for membrane mode shapes %%%%%%%%%%%%
+    reset_index = 50;
+    numberOfModes = 7;
+    F_normal = norm(normal_force_imposedOn_spacecraft);
+    x_impact = 0.0;
+    y_impact = 0.0;
+    Tension = 0;
+    rho = 1;
+    L = 1;
+
+    for i=1:numberOfModes
+        c(i,1)= -(Tension/rho)*(i*pi/L)^2;
+        Q_x(i,1)= F_normal*sin(i*pi*x_impact/L) ;
+        Q_y(i,1)= F_normal*sin(i*pi*y_impact/L) ;
+    end
+    dz(reset_index + 1,1) = z(reset_index + 4);
+    dz(reset_index + 2,1) = z(reset_index + 5);
+    dz(reset_index + 3,1) = z(reset_index + 6);
+    dz(reset_index + 4,1) = c(1)*z(reset_index + 1)+Q_x(1);
+    dz(reset_index + 5,1) = c(2)*z(reset_index + 2)+Q_x(2);
+    dz(reset_index + 6,1) = c(3)*z(reset_index + 3)+Q_x(3);
+
+    dz(reset_index + 7,1) = z(reset_index + 10);
+    dz(reset_index + 8,1) = z(reset_index + 11);
+    dz(reset_index + 9,1) = z(reset_index + 12);
+    dz(reset_index + 10,1) = c(1)*z(reset_index + 7)+Q_y(1);
+    dz(reset_index + 11,1) = c(2)*z(reset_index + 8)+Q_y(2);
+    dz(reset_index + 12,1) = c(3)*z(reset_index + 9)+Q_y(3);
+
+
+
+
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end

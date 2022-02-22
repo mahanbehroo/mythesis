@@ -29,6 +29,11 @@ function initial_conditions = get_initial_conditions()
 	initial_velocity_Sc = [-0.1;0;0];
 
 	initial_conditions_sc = [initial_rates_Sc2R; initial_orientation_sc; reshape(transpose(initial_rotation_matrix_Sc2R),[9,1]); initial_velocity_Sc; initial_position_Sc];
-	initial_conditions = [initial_conditions_db;initial_conditions_sc; init_quat_R2B_deb; init_quat_R2B_Sc];
+	
+	init_shape_Sc = [0;0;0;0;0;0;0;0;0;0;0;0];
+
+
+
+	initial_conditions = [initial_conditions_db;initial_conditions_sc; init_quat_R2B_deb; init_quat_R2B_Sc; init_shape_Sc];
 
 end

@@ -3,6 +3,10 @@ function  contact_situation = detect_contact(t, z)
 	object_1 = get_object_properties('spacecraft');
 	object_2 = get_object_properties('debris0000');
 
+	object1_isMembrane = 1; % temporary
+	
+
+
 	if object_1(2) == object_1(3) && object_1(2) == object_1(4)
 		object1_isSphere = true;
 	else
@@ -61,6 +65,11 @@ function  contact_situation = detect_contact(t, z)
         penetration_rate =0;
         %---------------------------------%
 
+	elseif (object1_isMembrane == true) && (object2_isSphere == true)
+		contact_status = 0;
+        penetration = 0;
+        penetration_rate =0;
+        %---------------------------------%
 	else
 		print('not implemented yet!');
     end
