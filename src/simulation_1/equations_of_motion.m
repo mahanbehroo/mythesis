@@ -348,15 +348,15 @@ function dz = equations_of_motion(t,z)
 
 	%%%%%%%%%% adding quaternions %%%%%%%%%%%%%%
 
-	dz(43,1) = dq_R2B_db(1,	1);
-	dz(44,1) = dq_R2B_db(2, 1);
-	dz(45,1) = dq_R2B_db(3, 1);
-	dz(46,1) = dq_R2B_db(4, 1);
+	dz(43,1) = 0; %dq_R2B_db(1,	1);
+	dz(44,1) = 0 ; %dq_R2B_db(2, 1);
+	dz(45,1) = 0 ; %dq_R2B_db(3, 1);
+	dz(46,1) = 0; %dq_R2B_db(4, 1);
 
-	dz(47,1) = dq_R2B_sc(1, 1);
-	dz(48,1) = dq_R2B_sc(2, 1);
-	dz(49,1) = dq_R2B_sc(3, 1);
-	dz(50,1) = dq_R2B_sc(4, 1);
+	dz(47,1) = 0; %dq_R2B_sc(1, 1);
+	dz(48,1) = 0; %dq_R2B_sc(2, 1);
+	dz(49,1) = 0; %dq_R2B_sc(3, 1);
+	dz(50,1) = 0; %dq_R2B_sc(4, 1);
 
     %%%%%%%%%%%%%%%%%%%%% adding states for membrane mode shapes %%%%%%%%%%%%
     reset_index = 50;
