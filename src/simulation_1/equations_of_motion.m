@@ -38,7 +38,7 @@ function dz = equations_of_motion(t,z)
 	%quaternion_R2B_db = rotation_matrix2quaternion(rotation_matrix);
 	quat_1 = rotm2quat(rotation_matrix);
 	quat_1 = quat_1';
-	delta_d = quaternion_R2B_db_1 - quat_1
+	delta_d = quaternion_R2B_db_1 - quat_1;
 
 
 	operator = [-quat_1(2) -quat_1(3) -quat_1(4); quat_1(1) quat_1(4) -quat_1(3); -quat_1(4) quat_1(1) quat_1(2); quat_1(3) -quat_1(2) quat_1(1)];
@@ -229,24 +229,24 @@ function dz = equations_of_motion(t,z)
     quat = rotm2quat(rotation_matrix_sc); 
     quat = quat';
 
-    test_m = quat2rotm(quat')
+    test_m = quat2rotm(quat');
 
 
 
    	quaternion_R2B_sc_1 = [z(47,1); z(48,1); z(49,1); z(50,1)];
-    sss = norm(quaternion_R2B_sc_1)
+    sss = norm(quaternion_R2B_sc_1);
     quaternion_R2B_sc_1 = quaternion_R2B_sc_1/ sss;
-    ggg = norm(quaternion_R2B_sc_1) 
+    ggg = norm(quaternion_R2B_sc_1) ;
 	quaternion_R2B_sc = rotation_matrix2quaternion(rotation_matrix_sc);
 
 	
 
-    hhhh = norm(quaternion_R2B_sc)
-    delta_s = quaternion_R2B_sc_1 - quaternion_R2B_sc
-    delt_1 = quat - quaternion_R2B_sc
-    delta_2 = quat - quaternion_R2B_sc_1
+    hhhh = norm(quaternion_R2B_sc);
+    delta_s = quaternion_R2B_sc_1 - quaternion_R2B_sc;
+    delt_1 = quat - quaternion_R2B_sc;
+    delta_2 = quat - quaternion_R2B_sc_1;
 
-    ttt =t
+    ttt =t;
 
     if norm(delta_s) > 1
         hhhhh=1;
@@ -364,7 +364,7 @@ function dz = equations_of_motion(t,z)
     F_normal = norm(normal_force_imposedOn_spacecraft);
     
     if t>0 && t<0.01
-        F_normal = 0.001; % test value
+        F_normal = 10; % test value
     end
 
 
@@ -376,16 +376,11 @@ function dz = equations_of_motion(t,z)
 
     for i=1:numberOfModes
         c(i,1)= -(Tension/rho)*(i*pi/L)^2;
-        Q_x(i,1)= F_normal*sin(i*pi*x_impact/L) ;
-        Q_y(i,1)= F_normal*sin(i*pi*y_impact/L) ;
+        Q_x(i,1)= F_normal*sin(i*pi*(L - x_impact)/L) ;
+        Q_y(i,1)= F_normal*sin(i*pi*(L - y_impact)/L) ;
     end
 
     for i=1:numberOfModes
-
-
-
-
-
 
         dz(reset_index + i, 1) = z(reset_index + i + numberOfModes);
         dz(reset_index + i + numberOfModes, 1) = c(i,1) * z(reset_index + i, 1) + Q_x(i,1);
@@ -394,39 +389,8 @@ function dz = equations_of_motion(t,z)
         dz(reset_index + i + 2 * numberOfModes, 1) = z(reset_index + i + 3 * numberOfModes);
         dz(reset_index + i + 3 * numberOfModes, 1) =  c(i,1) * z(reset_index + i + 2 * numberOfModes, 1) + Q_y(i,1);
 
-
-
-
-
-            %dz(reset_index + i + 1, 1) = z(reset_index + numberOfModes + 1);
-
-        %dz(reset_index + i + 1, 1) = c(i,1)*z(reset_index + i + 1)+Q_x(i,1);
-        %dz(reset_index + i + 1, 1) = c(i,1)*z(reset_index + i + 1)+Q_y(i,1);
-
-        
+       
     end
-
-
-
-
-
-    % dz(reset_index + 2,1) = z(reset_index + 5);
-    % dz(reset_index + 3,1) = z(reset_index + 6);
-    % dz(reset_index + 4,1) = c(1)*z(reset_index + 1)+Q_x(1);
-    % dz(reset_index + 5,1) = c(2)*z(reset_index + 2)+Q_x(2);
-    % dz(reset_index + 6,1) = c(3)*z(reset_index + 3)+Q_x(3);
-
-    % dz(reset_index + 7,1) = z(reset_index + 10);
-    % dz(reset_index + 8,1) = z(reset_index + 11);
-    % dz(reset_index + 9,1) = z(reset_index + 12);
-    % dz(reset_index + 10,1) = c(1)*z(reset_index + 7)+Q_y(1);
-    % dz(reset_index + 11,1) = c(2)*z(reset_index + 8)+Q_y(2);
-    % dz(reset_index + 12,1) = c(3)*z(reset_index + 9)+Q_y(3);
-
-
-
-
-
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

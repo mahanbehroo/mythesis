@@ -5,7 +5,7 @@ function plot_results()
 	fprintf('\nElapsed time loading data file (sec) = %1.3f\n',toc)
 	%----------------- plotting m_ij's position vs time ----------------------%
 	T	= OutputFile(:,1);
-	Z   = OutputFile(:,2:end - 8);
+    Z   = OutputFile(:,2:end);
 	t0 = OutputFile(1,1);
 	tf = OutputFile(end,1);
 
@@ -109,4 +109,14 @@ function plot_results()
 	xlabel('Time (sec)')
 	ylabel('Spacecraft Position Components')
 
+	subplot(2,2,3)
+	reset_index = 50;
+	numebrOfModes = 7;
+	plot(t,z(:,reset_index + 1:reset_index + numebrOfModes),'LineWidth',2);
+	xlabel('Time (sec)')
+	ylabel('Membrane time dependent states x dir')
+	subplot(2,2,4)	
+	plot(t,z(:,reset_index + 2 * numebrOfModes + 1 :reset_index + 3 * numebrOfModes),'LineWidth',2);
+	xlabel('Time (sec)')
+	ylabel('Membrane time dependent states y dir')
 end

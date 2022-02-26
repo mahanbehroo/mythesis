@@ -30,7 +30,8 @@ function initial_conditions = get_initial_conditions()
 
 	initial_conditions_sc = [initial_rates_Sc2R; initial_orientation_sc; reshape(transpose(initial_rotation_matrix_Sc2R),[9,1]); initial_velocity_Sc; initial_position_Sc];
 	
-	init_shape_Sc = [0;0;0;0;0;0;0;0;0;0;0;0];
+	numberOfModes = 7;
+	init_shape_Sc = zeros(4 * numberOfModes, 1);
 
 
 

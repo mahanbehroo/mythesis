@@ -15,9 +15,17 @@ function visualize_motion(t1,t2)
 	z = interp1(T,Z,t);
 
 	index =21;
+	reset_index = 50; 
+	numebrOfModes = 7;
+	L = 1;
+
+	[X1,Y1] = meshgrid(0:0.05:L,0:0.05:L);
+	dt1 = (tf-t0)/length(X1);
+    t_mem= (t0:dt1:tf)';
 
 	for j=1:length(t)
 		figure(2)
+		subplot(2,2,1)
 		hold off
 		%[X,Y,Z] = ellipsoid(xc,yc,zc,xr,yr,zr)
 		object_properties = get_object_properties('debris0000');
@@ -97,10 +105,36 @@ function visualize_motion(t1,t2)
 		y_c = z(j, index + 20);
 		z_c = z(j, index + 21);
 
-		[X1,Y1,Z1] = ellipsoid(0, 0, 0, a, b, c);
-		s1 = surf(X1 + x_c, Y1 + y_c , Z1 + z_c);
-		origin = [x_c, y_c, z_c];
-        rotate(s1, direction_1, amount_rotation_in_deg, origin)
+		%[X1,Y1,Z1] = ellipsoid(0, 0, 0, a, b, c);
+
+		zz =zeros (length(X1),length(Y1));
+	    %element = zeros (length(x),1);
+	    etha_temp = zeros (length(X1),length(X1));
+	    for i=1:numebrOfModes
+	        tau_x(j,i) = z(j, reset_index + i);
+	        tau_y(j,i) = z(j,reset_index + 2 * numebrOfModes + i );
+	        phi_x(:,i) = sin((i*pi/L)*X1(1,:));
+	        phi_y(:,i) = sin((i*pi/L)*Y1(:,1));
+	        etha_matrix = tau_x(j,i) * (phi_x(:,i) * (phi_y(:,i))');
+	        
+	        etha_temp = etha_temp + etha_matrix;
+	    end
+	   % for i=1:n
+	    %    element(:) = etha(:,i)+ element(:);
+	   % end
+	    for i=1:length(X1)
+	        for k=1:length(Y1)
+	            zz(i,k)= zz(i,k)+etha_temp(i,k);
+	            
+	        end
+        end
+
+
+       	
+
+		%s1 = surf(X1 + x_c, Y1 + y_c , zz + z_c);
+		%origin = [x_c, y_c, z_c];
+        %rotate(s1, direction_1, amount_rotation_in_deg, origin)
 		%---------------------------------------------------------------------
 
 
@@ -116,5 +150,20 @@ function visualize_motion(t1,t2)
     	zlabel('Z (m)')
 		hold on
 		%pause(dt)
+
+
+		figure(2)
+		hold off
+		subplot(2,2,2)
+
+		s2 = surf(X1, Y1, zz)
+		view([1 1 1]);
+    	%xlim([-10 5]);
+    	ylim([0 L]);
+    	zlim ([-L/50 L/50]);
+    	%xlabel('X (m)')
+    	ylabel('Y (m)')
+    	zlabel('Z (m)')
+    	%hold on
 	end
 end
